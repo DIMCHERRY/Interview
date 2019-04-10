@@ -2,6 +2,7 @@ package com.example.codercoral.interview;
 
 import android.app.Activity;
 import android.app.IntentService;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
@@ -69,6 +70,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         button_two.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                startActivity(new Intent(MainActivity.this, JsonActivity.class));
                 Log.d("Tag", "onTouch execute, action"+event.getAction());
                 return true;
             }
