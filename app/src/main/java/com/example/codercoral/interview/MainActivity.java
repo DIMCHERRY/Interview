@@ -72,7 +72,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
             public boolean onTouch(View v, MotionEvent event) {
                 startActivity(new Intent(MainActivity.this, JsonActivity.class));
                 Log.d("Tag", "onTouch execute, action"+event.getAction());
-                return true;
+                return false;
             }
         });
         
@@ -86,6 +86,17 @@ public class MainActivity extends Activity implements View.OnClickListener{
             fruitList.add(banana);
         }
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){

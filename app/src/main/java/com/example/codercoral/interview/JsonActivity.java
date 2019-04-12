@@ -20,31 +20,30 @@ import java.util.List;
 
 public class JsonActivity extends Activity {
     private ListView mListView;
-    private static String mURL = "http://www.imooc.com/api/teacher?type=4&num=30";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imglist);
         mListView = findViewById(R.id.lv_image);
+        String mURL = "http://www.imooc.com/api/teacher?type=4&num=30";
         new NewsAsyncTask().execute(mURL);
     }
 
     /**
-     * 通过json进行网络解析返回数据
+     * 将ｊｓｏｎ数据转化为ｎｅｗｓｂｅａｎ对象
      * @param url
      * @return
      */
     private List<NewsBean> getJsonData(String url) {
         List<NewsBean> newsBeansList = new ArrayList<>();
-        String toJson = null;
         try {
-            toJson = readStream(new URL(url).openStream());
-            JSONObject jsonObject = new JSONObject(toJson);
+            JSONObject jsonObject = new JSONObject(readStream(new URL(url).openStream()));
             JSONArray jsonArray = jsonObject.getJSONArray("data");
-            NewsBean newsBean = new NewsBean();
+            NewsBean newsBean;
             for(int i=0;i<jsonArray.length();i++){
                 jsonObject = jsonArray.getJSONObject(i);
+                newsBean = new NewsBean();
                 newsBean.newsIconURL = jsonObject.getString("picSmall");
                 newsBean.newsTitle = jsonObject.getString("name");
                 newsBean.newsContent = jsonObject.getString("description");
@@ -56,7 +55,6 @@ public class JsonActivity extends Activity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.d("xyh", toJson);
         return newsBeansList;
     }
 
@@ -72,7 +70,7 @@ public class JsonActivity extends Activity {
         return result;
     }
 
-    //开启子线程获取数据
+    //实现网络的异步访问
     class NewsAsyncTask extends AsyncTask<String, Void, List<NewsBean>> {
 
 
@@ -84,7 +82,7 @@ public class JsonActivity extends Activity {
         @Override
         protected void onPostExecute(List<NewsBean> newsBeans) {
             super.onPostExecute(newsBeans);
-            NewsAdapter adapter = new NewsAdapter(JsonActivity.this, newsBeans);
+            NewsAdapter adapter = new NewsAdapter(JsonActivity.this, newsBeans, mListView);
             mListView.setAdapter(adapter);
         }
     }
